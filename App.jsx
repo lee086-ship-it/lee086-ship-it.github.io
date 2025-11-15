@@ -8,6 +8,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 import data from './data.jsx';
 import Detail from './routes/Detail';
+import Nopage from './routes/Nopage';
+import Remove from './routes/Remove';
 
 function App() {
   let [shoes] = useState(data);
@@ -34,12 +36,12 @@ function App() {
               <Link to="/" class="nav-link active" aria-current="page">
                 Home
               </Link>
-              <Link to="/detail" class="nav-link active" aria-current="page">
+              <Link to="/detail/2" class="nav-link active" aria-current="page">
                 Detail
               </Link>
-              <Link to="/company" class="nav-link active" aria-current="page">
+              {/*<Link to="/company" class="nav-link active" aria-current="page">
                 Company
-              </Link>
+  </Link>*/}
               <Link
                 to="/company/manpower"
                 class="nav-link active"
@@ -53,6 +55,14 @@ function App() {
                 aria-current="page"
               >
                 Map
+              </Link>
+              <Link to="/etc" class="nav-link active" aria-current="page">
+                {' '}
+                etc{' '}
+              </Link>
+              <Link to="/remove" class="nav-link active" aria-current="page">
+                {' '}
+                account remove{' '}
               </Link>
             </div>
           </div>
@@ -75,11 +85,21 @@ function App() {
             </>
           }
         />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/company" element={<Company />}>
           <Route path="manpower" element={<Manpower />} />
           <Route path="map" element={<Map />} />
         </Route>
+        <Route
+          path="/etc"
+          element={
+            <div>
+              <h4>Etc</h4>
+            </div>
+          }
+        />
+        <Route path="*" element={<Nopage />} />
+        <Route path="/remove" element={<Remove />} />
       </Routes>
       {/* <>
         <div className="main-bg"></div>
@@ -112,14 +132,21 @@ function App() {
 function Goods(props) {
   return (
     <div className="p-2">
-      <img
-        src={
-          'https://github.com/lee086-ship-it/react_workspace/blob/main/s' +
-          (props.i + 1) +
-          '.PNG?raw=true'
-        }
-        width="50%"
-      />
+      <Link
+        to={'/detail/' + props.i}
+        class="nav-link active"
+        aria-current="page"
+      >
+        <img
+          src={
+            'https://github.com/lee086-ship-it/react_workspace/blob/main/s' +
+            (props.i + 1) +
+            '.PNG?raw=true'
+          }
+          width="50%"
+        />
+      </Link>
+
       <h5 className="my-3">{props.shoes.title}</h5>
       <p> {props.shoes.price}</p>
     </div>
@@ -132,6 +159,7 @@ function Company() {
       <h4>company</h4>
       It's a company
       <Outlet></Outlet>
+      ...
     </div>
   );
 }
@@ -157,4 +185,5 @@ function Map() {
     </div>
   );
 }
+
 export default App;

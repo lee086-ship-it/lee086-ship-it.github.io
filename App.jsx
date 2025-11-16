@@ -4,15 +4,17 @@ import viteLogo from '/vite.svg';
 import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 import data from './data.jsx';
 import Detail from './routes/Detail';
 import Nopage from './routes/Nopage';
 import Remove from './routes/Remove';
+import axios from 'axios';
+import Cart from './routes/Cart';
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
   return (
     <div className="App">
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -33,11 +35,11 @@ function App() {
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <Link to="/" class="nav-link active" aria-current="page">
+              <Link to="/" className="nav-link active" aria-current="page">
                 Home
               </Link>
-              <Link to="/detail/2" class="nav-link active" aria-current="page">
-                Detail
+              <Link to="/cart" className="nav-link activ" aria-current="page">
+                Cart
               </Link>
               {/*<Link to="/company" class="nav-link active" aria-current="page">
                 Company
@@ -82,6 +84,24 @@ function App() {
                   return <Goods shoes={a} i={i} />;
                 })}
               </div>
+              <button
+                onClick={() => {
+                  axios
+                    .get(
+                      'https://raw.githubusercontent.com/lee086-ship-it/react_workspace/refs/heads/main/data2.json'
+                    )
+                    .then((data2) => {
+                      console.log(data2.data);
+                      let copy = [...shoes, ...data2.data];
+                      setShoes(copy);
+                    })
+                    .catch(() => {
+                      console.log('what the...');
+                    });
+                }}
+              >
+                View More
+              </button>
             </>
           }
         />
@@ -100,7 +120,9 @@ function App() {
         />
         <Route path="*" element={<Nopage />} />
         <Route path="/remove" element={<Remove />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
+
       {/* <>
         <div className="main-bg"></div>
 
